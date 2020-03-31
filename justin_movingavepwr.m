@@ -50,12 +50,29 @@ legend('sound data', 'average power')
 
 %Perform an auto-correlation on the moving ave power
 acpshort = xcorr(pshort);
+%Create a time axis
+tACF=0:1/fs:(length(acpshort)-1)/fs;
 
 %Plot the autocorrelation of the moving ave pwr
 figure
-plot(acpshort)
+plot(tACF,acpshort)
 title("Plot of autocorrelated moving average power")
 xlabel('Time (s)')
+
+% CALCULATE BPM
+% Set guidelines on finding the peaks
+minPeakDistance=0.25;
+minPeakHeight=5;
+% Find the peaks and locations
+[pks,times] = findpeaks(acpshort,fs,'MinPeakDistance',minPeakDistance,...
+    'MinPeakHeight',minPeakHeight);
+% Plot points on AC function
+findpeaks(acpshort,fs,'MinPeakDistance',minPeakDistance,...
+    'MinPeakHeight',minPeakHeight); 
+
+timeDifference=mean(diff(times)); % Get the time difference between the peaks
+BPM=(1/timeDifference)*60;
+disp("BPM calculated -> " + BPM)
 
 
 disp("Short sound clip samples -> " + length(pshort))
