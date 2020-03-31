@@ -1,12 +1,13 @@
 % MOVING AVERAGE POWER METHOD
+close all; %Close all plots
 
 % Sound Data
-[x fs]=audioread('Avicii - Hey Brother.wav');
+[x fs]=audioread('fortroad_lost.wav');
 % 'Trim' size of file
 x=x(100:1000000);
 
 % Play sound
-%soundsc(y,fs)
+%soundsc(x,fs)
 
 % Time axis
 t=0:1/fs:(length(x)-1)/fs;
