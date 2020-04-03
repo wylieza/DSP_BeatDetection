@@ -27,7 +27,7 @@ xlim([start_time finnish_time])
 title("Short Section of Sound Data");
 
 %Play sound
-soundsc(xshort,fs)
+%soundsc(xshort,fs)
 
 
 %Moving Average Power
@@ -62,7 +62,6 @@ disp("Short sound clip samples -> " + length(pshort))
 disp("Auto correlation samples -> " + length(acpshort)) %Is 2N-1
 
 
-%Observations
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Fortroad - Lost
 %189300 - 158200 -> 31100 %Difference between two adjacent peaks in the auto
@@ -75,9 +74,8 @@ disp("Auto correlation samples -> " + length(acpshort)) %Is 2N-1
 %126100 - 110400 -> 15700 -> 168.5 bpm (Actual is either ~168 or 84)
 
 
-return
 
-
+if(0)
 % Frequency Domain
 
 % Frequency plots
@@ -128,5 +126,14 @@ plot(f,abs(FTPEnv))
 title("Frequency response of moving average power")
 xlabel("Frequency (Hz)")
 ylabel("Magnitude")
+end
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%FUNCTIONS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Observations
+%function bpm = get_bpm(indexi, indexf)
+%    bpm = 60/((indexf - indexi)/44100);
+%end
 
 
