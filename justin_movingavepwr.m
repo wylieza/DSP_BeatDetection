@@ -19,19 +19,24 @@ close all; %Close all plots
 
 %Import sound data
 %track_name = 'fortroad_lost.wav';
-track_name = 'heybrother_avicii.wav';
+%track_name = 'heybrother_avicii.wav';
 %track_name = 'thefatrat_timelapse.wav';
 %track_name = 'belwoorf_nostalgia.wav';
-%track_name = 'djfresh_golddust.wav';
+track_name = 'djfresh_golddust.wav';
 
 [x fs]=audioread(track_name);
 
 %Create a time index
 t=0:1/fs:(length(x)-1)/fs;
 
+%%%%%%CONFIG%%%%%%%%
 %'Trim' size of file down to sec seconds duration
-duration = 10; %Choose duration in seconds
-start_time = 124; %Choose start time in seconds
+duration = 5; %Choose duration in seconds
+start_time = 45; %Choose start time in seconds
+min_bpm = 40;
+max_bpm = 200;
+
+%%%%%%%%%%%%%%%%%%%%
 
 finnish_time = start_time + duration;
 trimi = find(start_time-1/fs <= t & t <= start_time+1/fs);
@@ -49,7 +54,7 @@ soundsc(xshort,fs)
 
 
 %Moving Average Power
-pshort = movmean(xshort.^2, 5);
+pshort = movmean(xshort.^2, 300);
 
 figure
 plot(tshort,pshort)
@@ -69,11 +74,45 @@ legend('sound data', 'average power')
 %Perform an auto-correlation on the moving ave power
 acpshort = xcorr(pshort);
 
+%Remove the second half of acpshort because it is redundant data
+acpshort = acpshort(1:floor(length(acpshort)/2-200)); %Removal constant should ideally be calculated...
+
+%Create a reletive time axis
+tacpshort = (0:1/fs:(length(acpshort)-1)/fs);
+
+
+if(0)
+%generate a best fit line for the acp
+index = 1;
+width = 5*44100; %in samples
+offset = 0; %offset from the current curve
+while((index + width) < length(acpshort))
+    pfit_coeff = polyfit(1:width, acpshort(index:(index+width-1)), 1);
+    pfit_line(index:(index+width-1)) = arrayfun(@(x) x + offset, linspace(0, width - 1, width).*pfit_coeff(1));
+    offset = pfit_line(index+width-1);
+    index = index + width;
+end
+%Deal with the last 'left over' bit of samples
+width = mod(length(acpshort),width);
+pfit_coeff = polyfit(1:width, acpshort(index:(index+width-1)), 1);
+pfit_line(index:(index+width-1)) = arrayfun(@(x) x + offset, linspace(0, width - 1, width).*pfit_coeff(1));
+
+
+
+%%%%%%%%%%Set focus point here%%%%%%%%
+close all; %Close all plots
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
 %Plot the autocorrelation of the moving ave pwr
 figure
-plot(acpshort)
+plot(tacpshort, acpshort);
+hold on;
+plot(tacpshort, pfit_line);
+hold off;
 title("Plot of autocorrelated moving average power")
 xlabel('Time (s)')
+end
 
 
 
@@ -81,19 +120,33 @@ xlabel('Time (s)')
 
 
 % CALCULATE BPM
-%Create a time axis
-tacpshort = 0:1/fs:(length(acpshort)-1)/fs;
 % Set guidelines on finding the peaks
-minPeakDistance=0.25;
-minPeakHeight=5;
+minPeakDistance=60/max_bpm;
+minPeakHeight=0;
+min_peak_prom = 50;
+
+
+
+%Plot the autocorrelation of the moving ave pwr WITH TIME
+figure();
+plot(tacpshort, acpshort)
+title("Plot of autocorrelated moving average power")
+xlabel('Time Instance (s)')
+
+figure();
 
 % Find the peaks and locations
 [pks,times] = findpeaks(acpshort,fs,'MinPeakDistance',minPeakDistance,...
-    'MinPeakHeight',minPeakHeight);
+    'MinPeakHeight',minPeakHeight,...
+    'MinPeakProminence',min_peak_prom);
 
 % Plot points on AC function
 findpeaks(acpshort,fs,'MinPeakDistance',minPeakDistance,...
-    'MinPeakHeight',minPeakHeight); 
+    'MinPeakHeight',minPeakHeight,...
+    'MinPeakProminence',min_peak_prom);
+
+title("Plot of autocorrelated moving average power")
+xlabel('Time Instance (s)')
 
 timeDifference=mean(diff(times)); % Get the time difference between the peaks
 BPM=(1/timeDifference)*60;
@@ -103,10 +156,9 @@ disp("BPM calculated -> " + BPM)
 disp("Short sound clip samples -> " + length(pshort))
 disp("Auto correlation samples -> " + length(acpshort)) %Is 2N-1
 
-
-
-
 if(0)
+
+
 
 
 % Frequency Domain
