@@ -18,11 +18,11 @@
 close all; %Close all plots
 
 %Import sound data
-%track_name = 'fortroad_lost.wav';
+track_name = 'fortroad_lost.wav';
 %track_name = 'heybrother_avicii.wav';
 %track_name = 'thefatrat_timelapse.wav';
 %track_name = 'belwoorf_nostalgia.wav';
-track_name = 'djfresh_golddust.wav';
+%track_name = 'djfresh_golddust.wav';
 
 [x fs]=audioread(track_name);
 
@@ -31,8 +31,8 @@ t=0:1/fs:(length(x)-1)/fs;
 
 %%%%%%CONFIG%%%%%%%%
 %'Trim' size of file down to sec seconds duration
-duration = 5; %Choose duration in seconds
-start_time = 45; %Choose start time in seconds
+duration = 15; %Choose duration in seconds
+start_time = 40; %Choose start time in seconds
 min_bpm = 40;
 max_bpm = 200;
 
@@ -44,22 +44,24 @@ trimf = find(finnish_time-1/fs <= t & t <= finnish_time+1/fs);
 xshort=x(trimi:trimf);
 tshort = t(trimi:trimf);
 
-figure
-plot(tshort,xshort)
-xlim([start_time finnish_time])
-title("Short Section of Sound Data");
+%display short section of sound data
+%figure
+%plot(tshort,xshort)
+%xlim([start_time finnish_time])
+%title("Short Section of Sound Data");
 
 %Play sound
-soundsc(xshort,fs)
+%soundsc(xshort,fs)
 
 
 %Moving Average Power
-pshort = movmean(xshort.^2, 300);
+pshort = movmean(xshort.^2, 150);
 
-figure
-plot(tshort,pshort)
-title("Plot of moving average power")
-xlabel('Time (s)')
+%moving average power plot
+%figure
+%plot(tshort,pshort)
+%title("Plot of moving average power")
+%xlabel('Time (s)')
 
 %Plot moving ave pwr and sound on same axies
 figure
@@ -81,8 +83,8 @@ acpshort = acpshort(1:floor(length(acpshort)/2-200)); %Removal constant should i
 tacpshort = (0:1/fs:(length(acpshort)-1)/fs);
 
 
-if(0)
 %generate a best fit line for the acp
+if(0)
 index = 1;
 width = 5*44100; %in samples
 offset = 0; %offset from the current curve
@@ -97,14 +99,7 @@ width = mod(length(acpshort),width);
 pfit_coeff = polyfit(1:width, acpshort(index:(index+width-1)), 1);
 pfit_line(index:(index+width-1)) = arrayfun(@(x) x + offset, linspace(0, width - 1, width).*pfit_coeff(1));
 
-
-
-%%%%%%%%%%Set focus point here%%%%%%%%
-close all; %Close all plots
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-%Plot the autocorrelation of the moving ave pwr
+%Plot the autocorrelation of the moving ave pwr with the best fit
 figure
 plot(tacpshort, acpshort);
 hold on;
@@ -117,38 +112,57 @@ end
 
 
 
-
-
 % CALCULATE BPM
 % Set guidelines on finding the peaks
 minPeakDistance=60/max_bpm;
-minPeakHeight=0;
-min_peak_prom = 50;
+min_peak_prom = 15;
 
 
 
 %Plot the autocorrelation of the moving ave pwr WITH TIME
-figure();
-plot(tacpshort, acpshort)
-title("Plot of autocorrelated moving average power")
-xlabel('Time Instance (s)')
-
-figure();
+%figure();
+%plot(tacpshort, acpshort)
+%title("Plot of autocorrelated moving average power")
+%xlabel('Time Instance (s)')
 
 % Find the peaks and locations
 [pks,times] = findpeaks(acpshort,fs,'MinPeakDistance',minPeakDistance,...
-    'MinPeakHeight',minPeakHeight,...
     'MinPeakProminence',min_peak_prom);
 
-% Plot points on AC function
-findpeaks(acpshort,fs,'MinPeakDistance',minPeakDistance,...
-    'MinPeakHeight',minPeakHeight,...
-    'MinPeakProminence',min_peak_prom);
+%remove bad peaks
+i = 2;
+while(i < length(pks)+1)
+    if(pks(i-1) > pks(i))
+        pks(i) = [];
+        times(i) = [];
+    else
+    i = i + 1;
+    end
+end
 
+%plot the corrected peak markers
+figure();
+plot(tacpshort, acpshort)
+hold on;
+plot(times, pks, 'x');
+hold off;
 title("Plot of autocorrelated moving average power")
 xlabel('Time Instance (s)')
 
-timeDifference=mean(diff(times)); % Get the time difference between the peaks
+
+
+% Plot points on AC function automatically
+%figure
+%findpeaks(acpshort,fs,'MinPeakDistance',minPeakDistance,...
+%    'MinPeakProminence',min_peak_prom);
+%title("Plot of findpeaks result")
+%xlabel('Time Instance (s)')
+
+
+
+diffs = round(diff(times), 3)
+display("Median is:" + median(diff(times)));
+timeDifference=median(diffs); % Get the time difference between the peaks
 BPM=(1/timeDifference)*60;
 disp("BPM calculated -> " + BPM)
 
