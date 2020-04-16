@@ -24,7 +24,7 @@ close all; %Close all plots
 %track_name = 'belwoorf_nostalgia.wav';
 track_name = 'djfresh_golddust.wav';
 
-[x fs]=audioread(track_name);
+[x, fs]=audioread(track_name);
 
 %Create a time index
 t=0:1/fs:(length(x)-1)/fs;
