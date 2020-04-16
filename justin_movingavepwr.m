@@ -18,11 +18,11 @@
 close all; %Close all plots
 
 %Import sound data
-track_name = 'fortroad_lost.wav';
+%track_name = 'fortroad_lost.wav';
 %track_name = 'heybrother_avicii.wav';
 %track_name = 'thefatrat_timelapse.wav';
 %track_name = 'belwoorf_nostalgia.wav';
-%track_name = 'djfresh_golddust.wav';
+track_name = 'djfresh_golddust.wav';
 
 [x fs]=audioread(track_name);
 
@@ -31,7 +31,7 @@ t=0:1/fs:(length(x)-1)/fs;
 
 %%%%%%CONFIG%%%%%%%%
 %'Trim' size of file down to sec seconds duration
-duration = 15; %Choose duration in seconds
+duration = 5; %Choose duration in seconds
 start_time = 40; %Choose start time in seconds
 min_bpm = 40;
 max_bpm = 200;
@@ -51,7 +51,7 @@ tshort = t(trimi:trimf);
 %title("Short Section of Sound Data");
 
 %Play sound
-%soundsc(xshort,fs)
+soundsc(xshort,fs)
 
 
 %Moving Average Power
@@ -76,8 +76,8 @@ legend('sound data', 'average power')
 %Perform an auto-correlation on the moving ave power
 acpshort = xcorr(pshort);
 
-%Remove the second half of acpshort because it is redundant data
-acpshort = acpshort(1:floor(length(acpshort)/2-200)); %Removal constant should ideally be calculated...
+%Remove just a bit less than the second half of acpshort because it is redundant data
+acpshort = acpshort(1:floor(length(acpshort)/2+200)); %Removal constant should ideally be calculated...
 
 %Create a reletive time axis
 tacpshort = (0:1/fs:(length(acpshort)-1)/fs);
