@@ -24,8 +24,10 @@ end
 
 %Last peak MUST be max value
 [mv, mi] = max(acpshort)
-pks(length(pks)) = mv;
-times(length(times)) = mi/fs;
+if(~isempty(pks))
+    pks(length(pks)) = mv;
+    times(length(times)) = mi/fs;
+end
 
 %Plot the corrected peak markers
 if(debug)
@@ -38,15 +40,21 @@ if(debug)
     xlabel('Time Instance (s)')
 end
 
-
-diffs = round(diff(times), 3); %Rounding corrects for slight deviations in time
-mode_diff = mode(diffs); % Get the time difference between the peaks
-bpm=(1/mode_diff)*60;
+if(isempty(pks))
+    bpm = 0;    
+else
+    diffs = round(diff(times), 3); %Rounding corrects for slight deviations in time
+    mode_diff = mode(diffs); % Get the time difference between the peaks
+    bpm=(1/mode_diff)*60;
+end
+    
 
 if(debug)
     disp("Peak time differences:");
-    diffs
-    display("Mode is:" + mode_diff);
+    if (~isempty(pks))
+        diffs
+        display("Mode is:" + mode_diff);
+    end
     disp("BPM calculated -> " + bpm);
 end
 

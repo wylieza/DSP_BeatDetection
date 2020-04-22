@@ -7,10 +7,10 @@ close all; %Close all plots
 
 %List of tracknames
 %track_name = 'fortroad_lost.wav'; %(Actual ~85)
-track_name = 'heybrother_avicii.wav'; %(Actual ~125)
+%track_name = 'heybrother_avicii.wav'; %(Actual ~125)
 %track_name = 'thefatrat_timelapse.wav'; %(Actual ~127)
 %track_name = 'belwoorf_nostalgia.wav'; %(Actual is either ~168 or 84)
-%track_name = 'djfresh_golddust.wav'; %(Actual ~73 or 145)
+track_name = 'djfresh_golddust.wav'; %(Actual ~73 or 145)
 
 %%%%%%CONFIG SETTINGS%%%%%%%%
 %'Trim' size of file down to sec seconds duration
@@ -30,8 +30,10 @@ fs = 44100;
 
 [acp, rtime] = acp_window(track_name, duration, start_time); %Get a time axis and first window
 start_time = 0;
-loop_number = 0;
+loop_number = 1;
 max_loops = floor(track_length(track_name)/duration);
+
+max_loops = 3;
 
 while(loop_number < max_loops)
     start_time = loop_number*duration;
