@@ -9,11 +9,13 @@ function [acp_wind, tshort] = acp_window(track_name, duration, start_time)
 t=0:1/fs:(length(x)-1)/fs;
 
 %Shorten the sample
-finnish_time = start_time + duration;
-trimi = find(start_time-1/fs <= t & t <= start_time+1/fs);
-trimf = find(finnish_time-1/fs <= t & t <= finnish_time+1/fs);
-xshort=x(trimi:trimf);
-tshort = t(trimi:trimf);
+%Determine start index and number of points
+start_index = start_time*fs + 1;
+end_index = start_index + duration*fs + 1;
+
+%Cut out that short section
+xshort=x(start_index:end_index);
+tshort = t(start_index:end_index);
 
 %Moving Average of Signal Power for short
 pshort = movmean(xshort.^2, 15);

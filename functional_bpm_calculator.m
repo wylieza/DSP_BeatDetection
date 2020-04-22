@@ -30,20 +30,17 @@ fs = 44100;
 
 [acp, rtime] = acp_window(track_name, duration, start_time); %Get a time axis and first window
 start_time = 0;
-acp = acp(5:length(acp)); %Temp fix
-rtime = rtime(1:length(acp)); %Temp fix
+loop_number = 0;
+max_loops = floor(track_length(track_name)/duration);
 
-while(start_time + 2*duration < track_length(track_name))
-    start_time = start_time + duration;
+while(loop_number < max_loops)
+    start_time = loop_number*duration;
     
     [acp_i, ~] = acp_window(track_name, duration, start_time);
     
-    acp_i = acp_i(length(acp_i) - length(acp)+1:length(acp_i));
-    %length(acp)
-    %length(acp_i)
-    
     acp = acp + acp_i;
     
+    loop_number = loop_number + 1;
 end
 
 bpm = acp_calcbpm(acp, fs, max_bpm);
