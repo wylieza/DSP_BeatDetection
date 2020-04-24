@@ -11,7 +11,14 @@ min_peak_prom = 15;
 [pks,times] = findpeaks(acpshort,fs,'MinPeakDistance',minPeakDistance,...
     'MinPeakProminence',min_peak_prom);
 
-%Remove 'bad' peaks
+%Last peak MUST be max value (For some reason, the findpeaks doesn't know this)
+[mv, mi] = max(acpshort)
+if(~isempty(pks))
+    pks(length(pks)) = mv;
+    times(length(times)) = mi/fs;
+end
+
+%Remove 'bad' peaks (If you correlate less than a previous 'peak' you are unlikely a beat...)
 i = 2;
 while(i < length(pks)+1)
     if(pks(i-1) > pks(i))
@@ -20,13 +27,6 @@ while(i < length(pks)+1)
     else
     i = i + 1;
     end
-end
-
-%Last peak MUST be max value
-[mv, mi] = max(acpshort)
-if(~isempty(pks))
-    pks(length(pks)) = mv;
-    times(length(times)) = mi/fs;
 end
 
 %Plot the corrected peak markers
