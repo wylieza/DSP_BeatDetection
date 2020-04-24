@@ -10,12 +10,14 @@ close all; %Close all plots
 %track_name = 'heybrother_avicii.wav'; %(Actual ~125)
 %track_name = 'thefatrat_timelapse.wav'; %(Actual ~127)
 %track_name = 'belwoorf_nostalgia.wav'; %(Actual is either ~168 or 84)
-track_name = 'djfresh_golddust.wav'; %(Actual ~73 or 145)
+%track_name = 'djfresh_golddust.wav'; %(Actual ~73 or 145)
+%track_name = '40bpmidealwithnoise.wav';
+track_name = '180bpmidealwithnoise.wav';
 
 %%%%%%CONFIG SETTINGS%%%%%%%%
 %'Trim' size of file down to sec seconds duration
-duration = 5; %Choose duration in seconds
-start_time = 0; %Choose start time in seconds
+duration = 6; %Choose duration in seconds
+start_time = 40; %Choose start time in seconds
 
 %min_bpm = 40; %UNUSED
 max_bpm = 200;
