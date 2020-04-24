@@ -19,10 +19,10 @@ close all; %Close all plots
 
 %Import sound data
 %track_name = 'fortroad_lost.wav';
-%track_name = 'heybrother_avicii.wav';
+track_name = 'heybrother_avicii.wav';
 %track_name = 'thefatrat_timelapse.wav';
 %track_name = 'belwoorf_nostalgia.wav';
-track_name = 'djfresh_golddust.wav';
+%track_name = 'djfresh_golddust.wav';
 
 [x, fs]=audioread(track_name);
 
@@ -51,7 +51,7 @@ tshort = t(trimi:trimf);
 %title("Short Section of Sound Data");
 
 %Play sound
-soundsc(xshort,fs)
+%soundsc(xshort,fs)
 
 
 %Moving Average Power
