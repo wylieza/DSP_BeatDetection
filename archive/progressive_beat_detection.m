@@ -35,7 +35,7 @@ start_time = 0;
 loop_number = 1;
 max_loops = floor(track_length(track_name)/duration);
 
-max_loops = 3;
+max_loops = 8;
 
 while(loop_number < max_loops)
     start_time = loop_number*duration;
@@ -46,6 +46,7 @@ while(loop_number < max_loops)
     
     loop_number = loop_number + 1;
 end
+
 
 [peaks, times] = locate_pks(acp, fs, max_bpm);
 
