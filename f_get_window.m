@@ -1,3 +1,4 @@
+%AUTHOR - Justin
 %Returns a window of samples for a window number (1 -> max)
 %Takes: [[sample values], [window number], [window length]]
 %returns: [[window of sample values], [sample indicies]]

@@ -1,3 +1,4 @@
+%AUTHOR - Justin
 %Loads in a track
 %Takes: [track name]
 %returns: [[track sample values], [sampling frequency], [sample times]]

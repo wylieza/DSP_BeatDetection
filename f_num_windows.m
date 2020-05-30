@@ -1,3 +1,4 @@
+%AUTHOR - Justin
 %Returns the number of windows for a given set of samples and window length
 %Takes: [[sample values], [window length]]
 %returns: [number of windows]
