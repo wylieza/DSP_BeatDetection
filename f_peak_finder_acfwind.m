@@ -19,10 +19,10 @@ minPeakDistance=60/max_bpm;
     'MinPeakProminence',min_peak_prom);
 
 %Last peak MUST be max value (For some reason, the findpeaks doesn't know this)
-[mv, mi] = max(acpshort)
+[mv, mi] = max(acp_window);
 if(~isempty(peak_values))
     peak_values(length(peak_values)) = mv;
-    peak_times(length(peak_times)) = mi/fs;
+    peak_times(length(peak_times)) = mi/sampling_f;
 end
 
 %Remove 'bad' peaks (If you correlate less than a previous 'peak' you are unlikely a beat...)
@@ -39,9 +39,9 @@ end
 %Plot the corrected peak markers
 if(debug)
     figure();
-    plot(acpshort)
+    plot(acp_window)
     hold on;
-    plot(peak_times*fs, peak_values, 'x');
+    plot(peak_times*sampling_f, peak_values, 'x');
     hold off;
     title("Plot of autocorrelated moving average power")
     xlabel('Time Instance (s)')

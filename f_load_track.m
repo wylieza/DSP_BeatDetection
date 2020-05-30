@@ -9,6 +9,6 @@ function [track_sv, track_sf, track_st] = f_load_track(track_name)
 [track_sv, track_sf]=audioread(track_name);
 
 %generate time indicies
-track_st = 0:1/fs:(length(x)-1)/fs;
+track_st = 0:1/track_sf:(length(track_sv)-1)/track_sf;
 
 end
