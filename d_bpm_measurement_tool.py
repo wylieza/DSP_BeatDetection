@@ -22,6 +22,7 @@ def on_press(key):
     if key == keyboard.Key.esc:
         if(timer_running):
             timer_running = False
+            print("BPM: reset\t" + "Time remaining: reset\t", end="\r")
         elif (completed):
             completed = False
         else:
@@ -39,7 +40,7 @@ def on_press(key):
             time_last_beat = time.time_ns()/1e6
             end_time = time.time_ns()/1e6 + 6e4
             bpm_values = []
-            print("BPM: reset\t" + "Time remaining: reset\t", end="\r")
+            print("BPM: ...\t" + "Time remaining: 60.0\t", end="\r")
 
 
 
