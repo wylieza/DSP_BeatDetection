@@ -1,0 +1,29 @@
+name: thefatrat_timelapse
+bpm: 127.2
+length: 3m5s
+num_beats: 392
+
+name: fortroad_lost
+bpm: 85.21
+length: 1m18s
+num_beats: 110
+
+name: djfresh_golddust
+bpm: 72.67
+length: 3m3s
+num_beats: 443
+
+name: belwoorf_nostalgia
+bpm: 84.04
+length: 4m0s
+num_beats: 336
+
+name: heybrother_avicii
+bpm: 125.2
+length: 4m23s
+num_beats: 548
+
+name: 180bpmidealwithnoise
+bpm: 180.4 (actual - 180)
+length: 2m30s
+num_beats: 451 (actual - 450)
