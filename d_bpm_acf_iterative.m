@@ -9,12 +9,11 @@ window_offset = 0; %choose window offset
 
 %List of tracknames
 %track_name = 'fortroad_lost.wav'; %(Actual ~85)
-track_name = 'heybrother_avicii.wav'; %(Actual ~125)
+%track_name = 'heybrother_avicii.wav'; %(Actual ~125)
 %track_name = 'thefatrat_timelapse.wav'; %(Actual ~127)
 %track_name = 'belwoorf_nostalgia.wav'; %(Actual is either ~168 or 84)
 %track_name = 'djfresh_golddust.wav'; %(Actual ~73 or 145)
-%track_name = '40bpmidealwithnoise.wav';
-%track_name = '180bpmidealwithnoise.wav';
+track_name = '180bpmidealwithnoise.wav';
 
 
 %load track

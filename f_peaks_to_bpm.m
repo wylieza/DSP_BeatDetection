@@ -8,7 +8,7 @@ function bpm = f_peaks_to_bpm(peak_values, peak_times)
 %debug flag
 debug = 0;
 
-if(isempty(peak_values))
+if(length(peak_values) < 2)
     bpm = 0;    
 else
     diffs = round(diff(peak_times), 3); %Rounding corrects for slight deviations in time
