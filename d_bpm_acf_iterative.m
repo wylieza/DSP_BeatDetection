@@ -4,7 +4,7 @@
 close all; %close all plots
 
 %%%%%%CONFIG SETTINGS%%%%%%%%
-window_duration = 4; %choose duration in seconds
+window_period = 4; %choose duration in seconds
 window_offset = 0; %choose window offset
 
 %List of tracknames
@@ -18,7 +18,7 @@ track_name = '180bpmidealwithnoise.wav';
 
 %load track
 [track_samples, sampling_f, sample_times] = f_load_track(track_name);
-window_length = window_duration*sampling_f;
+window_length = window_period*sampling_f;
 
 %determine number of windows
 num_windows = f_num_windows(track_samples, window_length);
