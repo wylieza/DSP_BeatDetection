@@ -11,6 +11,9 @@ track_name = 'heybrother_avicii.wav';
 %track_name = 'djfresh_golddust.wav';
 %track_name ='180bpmidealwithnoise.wav';
 
+% Meta-parameter - set the number of samples for the test
+num_samples = 10;
+
 [x, fs]=audioread(track_name);
 
 %Create a time index
@@ -18,7 +21,13 @@ t=0:1/fs:(length(x)-1)/fs;
 
 % Just use part of the song for now
 %duration = 5; %Choose duration in seconds
-duration = 20;
+%duration = 20;
+duration = 185; % Timelapse
+% duration = 78; % Lost
+% duration = 183; % Golddust
+% duration = 240; % Nostalgia
+% duration = 263; % Hey Brother
+% duration = 150; % 180 BPM
 start_time = 0; %Choose start time in seconds
 min_bpm = 40;
 max_bpm = 200;
