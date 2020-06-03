@@ -30,7 +30,8 @@ mvpwr_acp = zeros(window_length+1, 1);
 while(window_number < num_windows)
     
     %calculate the mvpwr_acp and then accumulate result
-    mvpwr_acp_i = f_mvpwr_acp(f_get_window(track_samples, window_number, window_length));    
+    mv_pwr_i = f_mv_pwr(f_get_window(track_samples, window_number, window_length));
+    mvpwr_acp_i = f_acp_operation(mv_pwr_i);
     mvpwr_acp = mvpwr_acp + mvpwr_acp_i;
     
     %using the accumulated mvpwr_acp determine the bpm
