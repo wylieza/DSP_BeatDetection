@@ -15,7 +15,8 @@ track_name = 'heybrother_avicii.wav'; %(Actual ~125)
 %%%%%%CONFIG SETTINGS%%%%%%%%
 %'Trim' size of file down to sec seconds duration
 %duration = 5; %Choose duration in seconds
-duration = 30; %Choose duration in seconds
+duration = 30; %Choose duration (window period) in seconds
+num_samples = 15; % Number of samples in movmean calculation
 start_time = 0; %Choose start time in seconds
 
 min_bpm = 40; 
@@ -38,7 +39,7 @@ fs = 44100;
 % END: Single window
 
 % Get first window
-[ftp, f] = f_ft_window(track_name, duration, start_time, min_bpm, max_bpm);
+[ftp, f] = f_ft_window(track_name, duration, start_time, min_bpm, max_bpm, num_samples);
 
 % Find the FT for each window and sum up the magnitude responses
 while(start_time + 2*duration < track_length(track_name))
