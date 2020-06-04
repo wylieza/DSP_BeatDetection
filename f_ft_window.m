@@ -5,7 +5,7 @@
 % ft_wind -> Fourier Transform of window (positive frequencies only)
 % f -> corresponding frequency axis
 function [ft_wind, f] = f_ft_window(track_name, duration, start_time, ...
-    min_bpm, max_bpm)
+    min_bpm, max_bpm, num_samples)
 
 %Read Track
 [x, fs]=audioread(track_name);
@@ -20,7 +20,7 @@ trimf = find(finish_time-1/fs <= t & t <= finish_time+1/fs);
 xshort=x(trimi:trimf);
 
 % Moving Average of Signal Power for short
-pshort = movmean(xshort.^2, 15);
+pshort = movmean(xshort.^2, num_samples);
 
 % FOURIER TRANSFORM
 
