@@ -4,10 +4,7 @@
 %Takes: [window values]
 %returns: [mvpwr_acf_values]
 
-function result_values = f_mv_pwr(window_values)
-
-%META PARAMETERS
-mving_ave_samples = 15;
+function result_values = f_mv_pwr(window_values, mving_ave_samples)
 
 %calculate the moving power
 result_values = movmean(window_values.^2, mving_ave_samples);
