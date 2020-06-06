@@ -4,7 +4,9 @@
 close all; %close all plots
 
 %%%%%%CONFIG SETTINGS%%%%%%%%
-window_period = 4; %choose duration in seconds
+%window_period = 4; %choose duration in seconds
+%mving_ave_samples = 15;
+v_metaparams_mpa
 window_offset = 0; %choose window offset
 
 %List of tracknames
@@ -13,7 +15,7 @@ window_offset = 0; %choose window offset
 %track_name = 'thefatrat_timelapse.wav'; %(Actual ~127)
 %track_name = 'belwoorf_nostalgia.wav'; %(Actual is either ~168 or 84)
 %track_name = 'djfresh_golddust.wav'; %(Actual ~73 or 145)
-track_name = '180bpmidealwithnoise.wav';
+%track_name = '180bpmidealwithnoise.wav';
 
 
 %load track
@@ -30,7 +32,7 @@ mvpwr_acp = zeros(window_length+1, 1);
 while(window_number < num_windows)
     
     %calculate the mvpwr_acp and then accumulate result
-    mv_pwr_i = f_mv_pwr(f_get_window(track_samples, window_number, window_length));
+    mv_pwr_i = f_mv_pwr(f_get_window(track_samples, window_number, window_length), mving_ave_samples);
     mvpwr_acp_i = f_acp_operation(mv_pwr_i);
     mvpwr_acp = mvpwr_acp + mvpwr_acp_i;
     
