@@ -9,18 +9,18 @@ close all; %close all plots
 %moving_ave_samples_arr = [1, 5, 10, 15, 20, 50, 100, 500, 1000];
 %window_periods = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50];
 
-%accuracy_vs_windownum();
-%accuracy_vs_window_period;
-accuracy_vs_mas;
+%error_vs_windownum();
+%error_vs_window_period;
+error_vs_mas;
 
-function accuracy_vs_mas()
+function error_vs_mas()
 v_metaparams_mpa
 
 %plot
 figure();
 hold on;
 xlabel("Number of Moving Average Samples");
-ylabel("Mean BPM Accuracy (Difference)");
+ylabel("Mean BPM Error (%)");
 xticks(1:length(moving_ave_samples_arr));
 xticklabels(moving_ave_samples_arr);
 
@@ -28,8 +28,8 @@ for index = 1:length(track_names)
     mean_accuracy_arr = [];
     for mas = moving_ave_samples_arr
         track_name = track_names(index);
-        window_period = window_periods(10);
-        accuracy_arr = accuracy(track_bpm(index), f_bpm_acf(track_name, window_period, mas));
+        window_period = window_periods(5);
+        accuracy_arr = error(track_bpm(index), f_bpm_acf(track_name, window_period, mas));
         mean_accuracy_arr = [mean_accuracy_arr, sum(accuracy_arr)/length(accuracy_arr)];
     end
     plot(mean_accuracy_arr);
@@ -40,14 +40,14 @@ legend(legend_tags);
 
 end
 
-function accuracy_vs_window_period()
+function error_vs_window_period()
 v_metaparams_mpa
 
 %plot
 figure();
 hold on;
 xlabel("Window Period");
-ylabel("Mean BPM Accuracy (Difference)");
+ylabel("Mean BPM Error (%)");
 xticks(window_periods);
 
 for index = 1:length(track_names)
@@ -55,7 +55,7 @@ for index = 1:length(track_names)
     for window_period = window_periods
         track_name = track_names(index);
         mving_ave_samples = moving_ave_samples_arr(4);
-        accuracy_arr = accuracy(track_bpm(index), f_bpm_acf(track_name, window_period, mving_ave_samples));
+        accuracy_arr = error(track_bpm(index), f_bpm_acf(track_name, window_period, mving_ave_samples));
         mean_accuracy_arr = [mean_accuracy_arr, sum(accuracy_arr)/length(accuracy_arr)];
     end
     plot(window_periods, mean_accuracy_arr);
@@ -66,22 +66,21 @@ legend(legend_tags);
 
 end
 
-function accuracy_vs_windownum()
+function error_vs_windownum()
 v_metaparams_mpa
 
 %plot
 figure();
 hold on;
 xlabel("Window Number");
-ylabel("BPM Accuracy (Difference)");
+ylabel("BPM Error (%)");
 
 for index = 1:length(track_names)
     track_name = track_names(index);
-    window_period = window_periods(10);
+    window_period = window_periods(5);
     mving_ave_samples = moving_ave_samples_arr(4);
     
-    plot(accuracy(track_bpm(index), f_bpm_acf(track_name, window_period, mving_ave_samples)));
-    %plot(f_bpm_acf(track_name, window_period, mving_ave_samples));
+    plot(error(track_bpm(index), f_bpm_acf(track_name, window_period, mving_ave_samples)));
 end
 
 hold off;
@@ -98,6 +97,22 @@ function [results] = accuracy(actual, estimates)
         msd = actual - estimates(i);
         results(i) = msd;
     end
+end
+
+function [results] = error(actual, estimates)
+    results = zeros(length(estimates), 1);
+    for i = 1:length(estimates)
+        difference = abs(actual - estimates(i));
+        
+        results(i) = difference/actual;
+        
+        if (results(i) > 0.9 && estimates(i) > 0.9*actual) %Assume it was aiming for double time BPM
+            results(i) = abs(1 - results(i));
+        end
+        
+        results(i) = results(i)*100;
+        
+    end   
 end
 
 

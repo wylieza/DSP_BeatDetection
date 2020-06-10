@@ -14,3 +14,15 @@ archive/observations/dubstepvsheybrother.PNG
 ml_beat_detection/
 d_bpm_acf_iterative.asv
 f_acp_operation.asv
+d_bpm_acf_fs.asv
+figures/errorvsmvasamples_t25.jpg
+figures/errorvswindownumber_t25_mva15.jpg
+figures/errorvswindowperiod_mva15.jpg
+figures/unused/accuracyvsmvasamples_t20.fig
+figures/unused/accuracyvsmvasamples_t25.fig
+figures/unused/accuracyvsmvasamples_t25.jpg
+figures/unused/accuracyvswindownumber_t25_mva15.fig
+figures/unused/accuracyvswindownumber_t25_mva15.jpg
+figures/unused/accuracyvswindownumber_t5_mva15.fig
+figures/unused/accuracyvswindowperiod_mva15.fig
+figures/unused/accuracyvswindowperiod_mva15.jpg
