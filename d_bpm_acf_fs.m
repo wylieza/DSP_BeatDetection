@@ -32,7 +32,7 @@ for index = 1:length(track_names)
         accuracy_arr = error(track_bpm(index), f_bpm_acf(track_name, window_period, mas));
         mean_accuracy_arr = [mean_accuracy_arr, sum(accuracy_arr)/length(accuracy_arr)];
     end
-    plot(mean_accuracy_arr);
+    plot(mean_accuracy_arr, '-O');
 end
 
 hold off;
@@ -58,7 +58,7 @@ for index = 1:length(track_names)
         accuracy_arr = error(track_bpm(index), f_bpm_acf(track_name, window_period, mving_ave_samples));
         mean_accuracy_arr = [mean_accuracy_arr, sum(accuracy_arr)/length(accuracy_arr)];
     end
-    plot(window_periods, mean_accuracy_arr);
+    plot(window_periods, mean_accuracy_arr, '-O');
 end
 
 hold off;
@@ -80,7 +80,7 @@ for index = 1:length(track_names)
     window_period = window_periods(5);
     mving_ave_samples = moving_ave_samples_arr(4);
     
-    plot(error(track_bpm(index), f_bpm_acf(track_name, window_period, mving_ave_samples)));
+    plot(error(track_bpm(index), f_bpm_acf(track_name, window_period, mving_ave_samples)), '-O');
 end
 
 hold off;
