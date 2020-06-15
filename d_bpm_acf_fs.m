@@ -10,8 +10,8 @@ close all; %close all plots
 %window_periods = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50];
 
 %error_vs_windownum();
-%error_vs_window_period;
-error_vs_mas;
+error_vs_window_period;
+%error_vs_mas;
 
 function error_vs_mas()
 v_metaparams_mpa
@@ -40,6 +40,13 @@ legend(legend_tags);
 
 end
 
+
+%%%%print results table%%%%
+function results_table(period, window_bpms, mean_error)
+    stddev = std(window_bpms);
+    fprintf("%.3f;%.3f;%.3f;%.3f\n", period, mean(window_bpms), stddev, mean_error);
+end
+
 function error_vs_window_period()
 v_metaparams_mpa
 
@@ -51,12 +58,19 @@ ylabel("Mean BPM Error (%)");
 xticks(window_periods);
 
 for index = 1:length(track_names)
+    disp(track_names(index));
+    disp("Window Period;Mean BPM;Standard Deviation;Mean Error");
     mean_accuracy_arr = [];
     for window_period = window_periods
-        track_name = track_names(index);
-        mving_ave_samples = moving_ave_samples_arr(4);
-        accuracy_arr = error(track_bpm(index), f_bpm_acf(track_name, window_period, mving_ave_samples));
-        mean_accuracy_arr = [mean_accuracy_arr, sum(accuracy_arr)/length(accuracy_arr)];
+        window_bpms = []; %reset window bpms for new window period being tested
+        track_name = track_names(index); %select track
+        mving_ave_samples = moving_ave_samples_arr(4); %select number of samples for mving ave.
+        window_bpms = [window_bpms, f_bpm_acf(track_name, window_period, mving_ave_samples)]; %get array of bpm's, one from each window
+        errors = error(track_bpm(index), f_bpm_acf(track_name, window_period, mving_ave_samples)); %gets an array of the error for each windows estimate
+        mean_accuracy_arr = [mean_accuracy_arr, sum(errors)/length(errors)];
+        
+        %print out line for table
+        results_table(window_period, window_bpms, mean(errors));
     end
     plot(window_periods, mean_accuracy_arr, '-O');
 end
@@ -107,7 +121,7 @@ function [results] = error(actual, estimates)
         results(i) = difference/actual;
         
         if (results(i) > 0.9 && estimates(i) > 0.9*actual) %Assume it was aiming for double time BPM
-            results(i) = abs(1 - results(i));
+            results(i) = 0.5*abs(1 - results(i));
         end
         
         results(i) = results(i)*100;
